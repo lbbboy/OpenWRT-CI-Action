@@ -254,6 +254,9 @@ jobs:
             内核版本：${{env.WRT_KVER}}
             插件列表：${{env.WRT_LIST}}
 
+      - name: Debug check
+        run: echo "Workflow status = ${{ job.status }}"
+
       - name: Telegram notification
         if: always()
         run: |
