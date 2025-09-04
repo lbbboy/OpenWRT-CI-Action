@@ -232,12 +232,10 @@ jobs:
         run: |
           if [ "${{ job.status }}" = "success" ]; then
             curl -s -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" \
-                 --data "text=🎉 OpenWrt ${{ env.VERSION }} ${{ env.WRT_TARGET }} 编译成功 😋  
-🔗 https://github.com/${{ github.repository }}/releases/latest/" \
+                 --data "text=🎉 OpenWrt ${{ env.VERSION }} ${{ env.WRT_TARGET }} 编译成功 😋 🔗 https://github.com/${{ github.repository }}/releases/latest/" \
                  "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage"
           else
             curl -s -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" \
-                 --data "text=❌ OpenWrt ${{ env.VERSION }} ${{ env.WRT_TARGET }} 编译失败 😂  
-🔗 https://github.com/${{ github.repository }}/releases/latest/" \
+                 --data "text=❌ OpenWrt ${{ env.VERSION }} ${{ env.WRT_TARGET }} 编译失败 😂 🔗 https://github.com/${{ github.repository }}/releases/latest/" \
                  "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage"
           fi
