@@ -100,7 +100,7 @@ jobs:
 
           cd ./wrt/ && echo "WRT_HASH=$(git log -1 --pretty=format:'%h')" >> $GITHUB_ENV
 
-          cp ../Config/feeds.conf.default ./feeds.conf.default
+          cp $GITHUB_WORKSPACE/Config/feeds.conf.default ./feeds.conf.default
 
           # GitHub Action 移除国内下载源
           PROJECT_MIRRORS_FILE="./scripts/projectsmirrors.json"
