@@ -254,24 +254,17 @@ jobs:
             内核版本：${{env.WRT_KVER}}
             插件列表：${{env.WRT_LIST}}
 
-      - name: Telegram notification (success)
-        if: success() && env.TELEGRAM_TOKEN
-        continue-on-error: true
+      - name: Telegram notification
+        if: always()
         run: |
-          RELEASE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/latest/"
-
-          TEXT="🎉 OpenWrt ${{ env.VERSION }} ${{ matrix.target }} 编译成功 😋查看最新 release: $RELEASE_URLCOW: ${{ env.COWURL || '' }}WETRANS: ${{ env.WETRANS || '' }} 🚀"
-
-          curl -s -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" \
-               --data "text=$TEXT" \
+          if [ "${{ job.status }}" == "success" ]; then
+             curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" \
+               --data "text=🎉 OpenWrt ${{ env.VERSION }} ${{ matrix.target }} 编译成功 😋  
+               🔗 https://github.com/${{ github.repository }}/releases/latest/" \
                "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage"
-
-      - name: Telegram notification (failure)
-        if: failure() && env.TELEGRAM_TOKEN
-        continue-on-error: true
-        run: |
-          TEXT="❌ OpenWrt ${{ env.VERSION }} ${{ matrix.target }} 编译失败 😭"
-
-          curl -s -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" \
-               --data "text=$TEXT" \
-               "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage"
+          else
+             curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" \
+             --data "text=❌ OpenWrt ${{ env.VERSION }} ${{ matrix.target }} 编译失败 😂  
+             🔗 https://github.com/${{ github.repository }}/releases/latest/" \
+             "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage"
+           fi
